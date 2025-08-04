@@ -5,7 +5,7 @@ namespace TaskManagerApp.Data
 {
     public class TaskDbContext : DbContext
     {
-        // this constructor helps helps to configure dbcontext from program.cs 
+        // this constructor helps to configure dbcontext from program.cs 
 
         public TaskDbContext(DbContextOptions<TaskDbContext> options)
     : base(options)

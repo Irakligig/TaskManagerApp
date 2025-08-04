@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagerApp.Data;
+using TaskManagerApp.Services;
 
 namespace TaskManagerApp
 {
@@ -9,9 +10,11 @@ namespace TaskManagerApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            string connectionString = "Data Source=tasks.db";
             builder.Services.AddDbContext<TaskDbContext>(options =>
-    options.UseSqlite("Data Source=tasks.db"));
+    options.UseSqlite(connectionString));
 
+            builder.Services.AddScoped<ITaskService, TaskService>();
             var app = builder.Build();
             app.Run();
         }
