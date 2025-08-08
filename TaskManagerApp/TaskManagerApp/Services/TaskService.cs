@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Xml.Serialization;
 using TaskManagerApp.Data;
 using TaskManagerApp.Models;
 
@@ -19,18 +21,38 @@ namespace TaskManagerApp.Services
 
         public async Task DeleteTask(int id)
         {
-            _context.Remove(new TaskItem {id = id});
+            var task = await _context.TaskItems.FindAsync(id);
+
+            if (task == null)
+            {
+                throw new KeyNotFoundException($"Task with id {id} not found.");
+            }
+
+            _context.TaskItems.Remove(task);
+
             await _context.SaveChangesAsync();
         }
 
         public async Task ExportToJsonAsync()
         {
-            
+            var allTasks = await GetAllTasksAsync();
+            var json = JsonSerializer.Serialize(allTasks, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            await File.WriteAllTextAsync("tasks.json", json);
         }
 
         public async Task ExportToXmlAsync()
         {
-            throw new NotImplementedException();
+            var allTasks = await GetAllTasksAsync();
+
+            var xs = new XmlSerializer(typeof(IEnumerable<TaskItem>));
+
+            using (Stream s = File.Create("tasks.xml"))
+            {
+                xs.Serialize(s, allTasks);
+            }
         }
 
         public async Task<IEnumerable<TaskItem>> GetAllTasksAsync()
@@ -49,12 +71,18 @@ namespace TaskManagerApp.Services
         public async Task UpdateTask(TaskItem task, int id)
         {
             var oldtask = await _context.TaskItems.FindAsync(id);
-            oldtask = task;
+
             if (oldtask == null)
             {
                 throw new KeyNotFoundException($"Task with id {id} not found.");
             }
-            _context.Update(oldtask);
+
+            oldtask.Title = task.Title;
+            oldtask.Description = task.Description;
+            oldtask.Priority = task.Priority;
+            oldtask.Deadline = task.Deadline;
+            oldtask.isCompleted = task.isCompleted;
+            await _context.SaveChangesAsync();
         }
     }
 }
