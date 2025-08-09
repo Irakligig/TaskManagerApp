@@ -17,6 +17,7 @@ namespace TaskManagerApp
     options.UseSqlite(connectionString));
 
             builder.Services.AddScoped<ITaskService, TaskService>();
+            builder.Services.AddHostedService<BackGroundService.AutoSaveService>();
             var app = builder.Build();
 
             app.MapGet("/tasks", async (ITaskService taskService) =>
