@@ -6,12 +6,12 @@ namespace TaskManagerApp.BackGroundService
 {
     public class AutoSaveService : BackgroundService
     {
-        private readonly ITaskService _service;
+        private readonly IServiceProvider _serviceprovider;
         private readonly ILogger<AutoSaveService> _logger;
 
-        public AutoSaveService(ITaskService service, ILogger<AutoSaveService> logger)
+        public AutoSaveService(IServiceProvider serviceprovider, ILogger<AutoSaveService> logger)
         {
-            this._service = service;
+            this._serviceprovider = serviceprovider;
             _logger = logger;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -20,6 +20,10 @@ namespace TaskManagerApp.BackGroundService
             {
                 try
                 {
+                    // create a scope to avoid lifetime issues
+                    using var scope = _serviceprovider.CreateScope();
+                    var _service = scope.ServiceProvider.GetRequiredService<ITaskService>();
+
                     await _service.ExportToJsonAsync();
 
                     await _service.ExportToXmlAsync();

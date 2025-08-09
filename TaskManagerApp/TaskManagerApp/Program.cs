@@ -20,7 +20,20 @@ namespace TaskManagerApp
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddHostedService<BackGroundService.AutoSaveService>();
             builder.Services.AddSingleton<PluginInspector>();
+
+            //required for swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
 
             app.MapGet("/tasks", async (ITaskService taskService) =>
             {

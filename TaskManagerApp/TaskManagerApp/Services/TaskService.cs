@@ -45,9 +45,10 @@ namespace TaskManagerApp.Services
 
         public async Task ExportToXmlAsync()
         {
-            var allTasks = await GetAllTasksAsync();
+            //xmlserilizer requires a concrete type to know how to serialize
+            var allTasks = (await GetAllTasksAsync()).ToList();
 
-            var xs = new XmlSerializer(typeof(IEnumerable<TaskItem>));
+            var xs = new XmlSerializer(typeof(List<TaskItem>));
 
             using (Stream s = File.Create("tasks.xml"))
             {

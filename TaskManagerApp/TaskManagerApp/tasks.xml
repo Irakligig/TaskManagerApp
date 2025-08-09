@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTaskItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TaskItem>
+    <id>1</id>
+    <Title>string</Title>
+    <Description>string</Description>
+    <Priority>0</Priority>
+    <Deadline>2025-12-31T23:59:59</Deadline>
+    <isCompleted>false</isCompleted>
+  </TaskItem>
+  <TaskItem>
+    <id>2</id>
+    <Title>string2</Title>
+    <Description>string</Description>
+    <Priority>0</Priority>
+    <Deadline>2025-12-31T23:59:59</Deadline>
+    <isCompleted>false</isCompleted>
+  </TaskItem>
+  <TaskItem>
+    <id>3</id>
+    <Title>string3</Title>
+    <Description>string</Description>
+    <Priority>0</Priority>
+    <Deadline>2025-12-31T23:59:59</Deadline>
+    <isCompleted>false</isCompleted>
+  </TaskItem>
+</ArrayOfTaskItem>
