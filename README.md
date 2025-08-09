@@ -43,19 +43,23 @@ TaskManagerApp is a minimal API built with .NET 6+ designed to manage task items
 ## Project Structure
 
 /TaskManagerApp
-|-- Program.cs # API endpoint definitions and DI setup
+|-- Program.cs # API endpoint definitions and dependency injection setup
 |-- /Data
-| |-- TaskDbContext.cs # EF Core DbContext configuration
+| |-- TaskDbContext.cs # EF Core DbContext configuration for task entities
 |-- /Models
 | |-- TaskItem.cs # Task entity definition
 |-- /Services
-| |-- ITaskService.cs # Service interface for task operations
-| |-- TaskService.cs # Implementation of task CRUD, export/import logic
+| |-- ITaskService.cs # Interface defining task operations
+| |-- TaskService.cs # Business logic and task CRUD implementation
 |-- /BackgroundService
-| |-- AutoSaveService.cs # Hosted background service for autosaving tasks
+| |-- AutoSaveService.cs # Hosted service for automatic task saving in the background
 |-- /Reflection
-| |-- PluginInspector.cs # Reflection-based metadata provider
-|-- README.md # Project documentation
+| |-- PluginInspector.cs # Reflection-based metadata provider for plugin inspection
+| |-- ParameterDto.cs # Data transfer object for method parameters
+| |-- MethodInfoDto.cs # DTO for method information
+| |-- PropertyDto.cs # DTO for property information
+| |-- ReflectionInfo.cs # Aggregated reflection metadata container
+|-- README.md # This documentation file
 
 
 ---
