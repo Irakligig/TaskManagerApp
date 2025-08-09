@@ -72,7 +72,7 @@ TaskManagerApp is a minimal API built with .NET 6+ designed to manage task items
 
 ## Usage Examples
 
-Create a task :
+Create a Task:
 
 POST /tasks
 Content-Type: application/json
@@ -86,10 +86,11 @@ Content-Type: application/json
   "isCompleted": false
 }
 
-Get all tasks: 
+Retrieve All Tasks:
+
 GET /tasks
 
-Update a task:
+Update a Task:
 
 PUT /tasks/1
 Content-Type: application/json
@@ -103,19 +104,20 @@ Content-Type: application/json
   "isCompleted": true
 }
 
-Delete a task:
+Delete a Task:
 
 DELETE /tasks/1
 
-Export tasks(json): 
+Export Tasks (JSON):
 
 GET /export/json
 
-Export tasks(XML): 
+Export Tasks (XML):
 
 GET /export/xml
 
-Import tasks(json): 
+Import Tasks (JSON):
+
 POST /import/json
 Content-Type: application/json
 
@@ -130,12 +132,11 @@ Content-Type: application/json
   }
 ]
 
-Notes
-Background autosave service runs every 5 minutes, exporting current tasks to JSON and XML files.
+## Notes
 
-Reflection endpoint provides metadata about service methods and properties for introspection.
+- The background autosave service runs every 5 minutes, automatically exporting current tasks to JSON and XML files for persistence.
+- The reflection endpoint provides dynamic metadata about service methods and properties, enabling introspection of the API's capabilities.
+- All inputs undergo thorough validation to ensure data integrity and consistency throughout the application lifecycle.
+- This project exemplifies best practices in modern .NET backend development, including clean architecture, asynchronous programming, and robust API design.
 
-Proper validation is implemented on all inputs to ensure data integrity.
-
-The project is a solid demonstration of modern .NET backend development practices.
 
