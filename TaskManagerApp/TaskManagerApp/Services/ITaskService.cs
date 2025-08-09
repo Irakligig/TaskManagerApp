@@ -11,6 +11,8 @@ namespace TaskManagerApp.Services
         Task DeleteTask(int id);
         Task ExportToJsonAsync();
         Task ExportToXmlAsync();
+        Task ImportFromJsonAsync(string json);
+        Task ImportFromXMlAsync(Stream xmlStream);
 
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TaskManagerApp.Data;
 using TaskManagerApp.Models;
+using TaskManagerApp.Reflection;
 using TaskManagerApp.Services;
 
 namespace TaskManagerApp
@@ -18,6 +19,7 @@ namespace TaskManagerApp
 
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddHostedService<BackGroundService.AutoSaveService>();
+            builder.Services.AddSingleton<PluginInspector>();
             var app = builder.Build();
 
             app.MapGet("/tasks", async (ITaskService taskService) =>
@@ -93,6 +95,48 @@ namespace TaskManagerApp
             {
                 await taskservice.ExportToXmlAsync();
                 return Results.Ok("Tasks exported to tasks.xml");
+            });
+
+            app.MapPost("/import/json",async (ITaskService taskservice,HttpRequest request) =>
+            {
+                using (var reader = new StreamReader(request.Body))
+                {
+                    var json = await reader.ReadToEndAsync();
+                    try
+                    {
+                        await taskservice.ImportFromJsonAsync(json);
+                        return Results.Ok("Tasks imported from JSON successfully.");
+                    }
+                    catch (ArgumentException A)
+                    {
+                        return Results.BadRequest(A.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        return Results.Problem(ex.Message);
+                    }
+
+                }
+            });
+
+            app.MapPost("/import/xml",async (ITaskService taskService,HttpRequest request) =>
+            {
+                try
+                {
+                    await taskService.ImportFromXMlAsync(request.Body);
+                    return Results.Created("/tasks", null);
+                }
+                catch (Exception ex)
+                {
+                    return Results.BadRequest(ex.Message);
+                }
+            });
+
+
+            app.MapGet("/reflection/plugininfo",async (PluginInspector pluginInspector) =>
+            {
+                var info = pluginInspector.GetMetaInfo();
+                return Results.Ok(info);
             });
             app.Run();
         }
